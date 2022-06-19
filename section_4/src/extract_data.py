@@ -60,7 +60,7 @@ class BaseCountryCovidAPI():
         df = pd.DataFrame(final)
     
         try:
-            df.to_csv('../temp/covid_data.csv')
+            df.to_csv('../temp/covid_data.csv', index=False)
             print("Successfully saved data to csv")
         except Exception as e:
             logging.error(f'Failed to save raw data . Error message {e}')
