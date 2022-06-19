@@ -3,7 +3,8 @@ CREATE TABLE sales (
     salesperson_id INT NOT NULL,
     customer_id BIGINT NOT NULL,
     serial_number VARCHAR(30) NOT NULL,
-    price FLOAT NOT NULL
+    price FLOAT NOT NULL,
+    DATE DATE NOT NULL
 );
 
 CREATE TABLE cars (

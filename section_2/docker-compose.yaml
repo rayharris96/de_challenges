@@ -8,3 +8,9 @@ services:
       POSTGRES_USER: postgres 
       POSTGRES_PASSWORD: postgres 
       POSTGRES_DB: dealership_db
+    volumes:
+    #Add volumes to persist data
+      - ./database_data:/var/lib/postgresql/data
+
+volumes:
+  database_data:
