@@ -74,7 +74,6 @@ services:
       POSTGRES_DB: airflow
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
-      - ./pgsetup/load_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
@@ -125,5 +124,22 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
 
+  database:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: database
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./database_data:/var/lib/postgresql/data
+      - ./pgsetup/load_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./raw_tables:/var/lib/postgresql/csvs
+
 volumes:
   postgres-db-volume:
+  database_data:

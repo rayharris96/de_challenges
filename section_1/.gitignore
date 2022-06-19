@@ -16,3 +16,5 @@ logs/*
 temp/*
 
 __MACOSX
+
+database_data/

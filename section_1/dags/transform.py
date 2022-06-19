@@ -4,9 +4,9 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
+import psycopg2
 import os
 
-DAG_FOLDER_PATH = os.path.realpath(os.path.join(os.path.abspath(__file__), ".."))
 default_args = {
     "owner": "airflow",
     "depends_on_past": True,
@@ -30,11 +30,11 @@ dag = DAG(
 tables = [
     {
         'task' : 'transform_dataset1',
-        'sql': f'{DAG_FOLDER_PATH}/sql/dataset1.sql',
+        'sql': "sql/dataset1.sql",
     },
     {
         'task' : 'transform_dataset2',
-        'sql': f'{DAG_FOLDER_PATH}/sql/dataset2.sql',
+        'sql': "sql/dataset2.sql",
     },
 ]
 
@@ -43,6 +43,7 @@ for item in tables:
     transform = PostgresOperator(
         task_id=item['task'],
         sql=item['sql'],
+        postgres_conn_id="database",
         dag=dag
     )
 
