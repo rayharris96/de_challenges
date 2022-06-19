@@ -53,7 +53,8 @@ class BaseCountryCovidAPI():
             data={}
             data['country'] = item.get("Country")
             data['cases'] = item.get("Cases")
-            data['date'] = item.get("Date")
+            #parse date and ignore time
+            data['date'] = datetime.datetime.strptime(item.get("Date"), "%Y-%m-%dT%H:%M:%S%z").strftime("%Y-%m-%d")
 
             final.append(data)
 
