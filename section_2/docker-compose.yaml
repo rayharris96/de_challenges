@@ -1,5 +1,6 @@
 version: '3'
 
+#Use docker compose for easier control, and scaling of containers for additional services
 services:
   database:
     build: .
