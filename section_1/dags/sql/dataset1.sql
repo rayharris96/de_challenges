@@ -67,5 +67,4 @@ create table dataset1_transformed as (
         above_100
     from base3
     where first_name notnull and last_name notnull --rows without a name is deleted
-);
-copy dataset1_transformed TO 'dataset1_transformed.csv'  WITH DELIMITER ',' CSV HEADER;
+)

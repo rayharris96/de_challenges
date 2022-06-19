@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import psycopg2
 import os
 
+DAG_FOLDER_PATH = os.path.realpath(os.path.join(os.path.abspath(__file__), ".."))
 default_args = {
     "owner": "airflow",
     "depends_on_past": True,
@@ -29,11 +30,13 @@ dag = DAG(
 
 tables = [
     {
-        'task' : 'transform_dataset1',
+        'task' : 'dataset1',
+        'table_name' : 'dataset1_transformed',
         'sql': "sql/dataset1.sql",
     },
     {
-        'task' : 'transform_dataset2',
+        'task' : 'dataset2',
+        'table_name' : 'dataset2_transformed',
         'sql': "sql/dataset2.sql",
     },
 ]
@@ -41,11 +44,17 @@ tables = [
 #Assign tasks with customized task id and sql location
 for item in tables:
     transform = PostgresOperator(
-        task_id=item['task'],
+        task_id=f"transform_{item['task']}",
         sql=item['sql'],
         postgres_conn_id="database",
         dag=dag
     )
+    save = BashOperator(
+        task_id=f"save_{item['task']}",
+        bash_command=f"bash {DAG_FOLDER_PATH}/scripts/copy.sh $source",
+        params={'source':item['table_name']},
+        dag=dag,
+    )
 
     #Instantiate tasks in dag
-    transform
+    transform >> save
