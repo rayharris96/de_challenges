@@ -15,6 +15,9 @@ class BaseCountryCovidAPI():
     BASE_URL = "https://api.covid19api.com/country/{0}/status/confirmed?from={1}T00:00:00Z&to={2}}T00:00:00Z"
 
     def _request(self, url) -> Any:
+        """
+        Simple method for request fetching
+        """
         try:
             resp = requests.get(url)
                 
@@ -27,9 +30,13 @@ class BaseCountryCovidAPI():
             logging.error(f"Url {url} returned a non-200 status code {resp.status_code}")
             raise Exception("API Error")
 
+        #Return data as content - bytes
         return content
 
     def _url_maker(self) -> str:
+        """
+        Method to create and format final url based on attributes
+        """
         final_url = self.BASE_URL.format(
             self.COUNTRY,
             self.START_DATE,
@@ -39,6 +46,9 @@ class BaseCountryCovidAPI():
         return final_url
     
     def _parse(self, content):
+        """
+        Method to parse returned JSON data, build a dataframe and save it as a csv
+        """
         json_content = json.load(content)
 
         final=[]
@@ -59,6 +69,9 @@ class BaseCountryCovidAPI():
             logging.error(f'Failed to save raw data . Error message {e}')
 
     def _main(self):
+        """
+        Main wrapper of methods to interact with inputs and coordinate with class methods
+        """
         parser = argparse.ArgumentParser()
         parser.add_argument("--country", type=str, required=True, help="Target country")
         parser.add_argument("--start", type=str, required=True,help="Start date for the covid api")
