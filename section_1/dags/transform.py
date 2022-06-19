@@ -43,7 +43,7 @@ for item in tables:
     transform = PostgresOperator(
         task_id=item['task'],
         sql=item['sql'],
-        dag=dag,
+        dag=dag
     )
 
     #Instantiate tasks in dag
