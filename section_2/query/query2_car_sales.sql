@@ -7,8 +7,8 @@ with base as (
         serial_number, -- assumed is unique for each car
         date -- assume date format is YYYY-MM-DD
     from sales
-    where date_part('year', date) = date_part('year', (select current timestamp))
-    and date_part('month', date) = date_part('month', (select current timestamp))
+    where date_part('year', date)::int = date_part('year', now())::int
+    and date_part('month', date)::int = date_part('month', now())::int
 ),
 joined as (
     -- CTE2: Join transactions with car table - get the count of cars sold by their respective manufacturers
