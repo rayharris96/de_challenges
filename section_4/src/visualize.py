@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 def plot_charts():
-    df = pd.read_csv('temp/covid_data.csv')
+    df = pd.read_csv('../temp/covid_data.csv')
     country = df['country'][0]
     min_date = df['date'].min()
     max_date = df['date'].max()
