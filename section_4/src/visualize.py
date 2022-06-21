@@ -1,17 +1,26 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 
 def plot_charts():
-    df = pd.read_csv('../temp/covid_data.csv')
+    df = pd.read_csv('temp/covid_data.csv')
     country = df['country'][0]
     min_date = df['date'].min()
     max_date = df['date'].max()
 
     title=f"Covid Cases in {country} from {min_date} to {max_date}"
-    fig = plt.figure(figsize=(20,10))
-    ax = fig.subplots()
-    df.plot(kind='line',x='date', y='cases',ax = ax, title=title, rot=70)
+    fig = plt.subplots(figsize=(20,10))
+    x = df["date"]
+    y = df["cases"]
+
+    plt.plot(x,y)
+    plt.xticks(np.arange(0,len(x), 30),rotation=70)
+    plt.yticks(np.arange(0,max(y),20000))
+
+    plt.title(title)
+    plt.ylabel("Number of Cases")
+    plt.grid()
 
     plt.savefig(f'../charts/covid_charts_{country}_{min_date}_{max_date}.png')
 
