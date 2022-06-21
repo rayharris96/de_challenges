@@ -14,3 +14,12 @@ Create a new field named above_100, which is true if the price is strictly great
 Note: please submit the processed dataset too.
 
 ## Problem Solutions
+The solution I have implemented consists of the following steps:
+- Dockerized airflow and postgres containers to load the data and orchestrate scheduling of tasks
+- Raw data is loaded at docker compose instance up into Postgres container. To start, type ```make up```
+- Once Airflow is running, one can access the webserver via localhost:8080. Username and password is airflow and airflow
+- Inside the DAG, there are two tasks - 'transform' and 'load'.
+- Transformation task reads the sql code in `dags/sql` and applies transformation to a new table
+- Save task executes bash command in `dags/scripts` and then saves the transformed table to a target destination
+- The transformed data is saved at 'transformed_data' folder
+- ```make down``` to stop and clear the running containers
