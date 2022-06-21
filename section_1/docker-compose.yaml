@@ -87,6 +87,7 @@ services:
     <<: *airflow-common
     command: webserver
     ports:
+    #airflow webserver is exposed at port 8080
       - 8080:8080
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
@@ -137,8 +138,11 @@ services:
     ports:
       - "5433:5432"
     volumes:
+      #Persist data 
       - ./database_data:/var/lib/postgresql/data
+      #Postgres initialization script to load in the raw tables
       - ./pgsetup/load_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      #Mount the raw tables folder so that it can be found in the container filesystem
       - ./raw_tables:/var/lib/postgresql/csvs
 
 volumes:
